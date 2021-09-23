@@ -9,6 +9,18 @@ import SwiftUI
 
 struct NewsFeedView: View {
     @StateObject var viewModel = ViewModel()
+    @State private var search = ""
+
+    var searchResults: [News.Article] {
+        if search.isEmpty {
+            return viewModel.newsFeed
+        } else {
+            return viewModel.newsFeed.filter {
+                $0.source.name.lowercased().contains(search.lowercased()) ||
+                $0.title.lowercased().contains(search.lowercased())
+            }
+        }
+    }
     
     var body: some View {
         NavigationView {
@@ -19,9 +31,10 @@ struct NewsFeedView: View {
                         .background(RoundedRectangle(cornerRadius: 10).fill(Color(.systemBackground)))
                         .shadow(radius: 10)
                 } else {
-                    List(viewModel.newsFeed) { article in
+                    List(searchResults) { article in
                         NewFeedRowView(article: article)
                     }
+                    .searchable(text: $search)
                 }
             }
             .task {
@@ -58,8 +71,8 @@ struct NewsFeedView: View {
             } message: {
                 Text(viewModel.errorMessage)
             }
-
         }
+        .navigationViewStyle(.stack)
     }
 }
 

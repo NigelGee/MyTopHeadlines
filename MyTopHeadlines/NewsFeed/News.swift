@@ -10,7 +10,7 @@ import Foundation
 enum URLComponent {
     static let baseURL = "https://newsapi.org/v2/top-headlines"
     static let country = "GB"
-    static let apiKey = "Please insert your API key here"
+    static let apiKey = "7548056a7ea74281ad5772b717511fc9"
 }
 
 struct News: Decodable {
